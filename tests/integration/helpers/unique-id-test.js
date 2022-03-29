@@ -1,12 +1,16 @@
-import { module, test } from 'qunit';
+import { module, test, skip } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
+import { gte } from 'ember-compatibility-helpers';
+
+const IdHelperPolyfilled = !gte('v4.4.0-beta.1');
+const testIfIdHelperPolyfilled = IdHelperPolyfilled ? test : skip;
 
 module('Integration | Helper | unique-id', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders unique id', async function (assert) {
+  testIfIdHelperPolyfilled('it renders unique id', async function (assert) {
     await render(hbs`{{unique-id}}`);
 
     let firstId = this.element.textContent.trim();
